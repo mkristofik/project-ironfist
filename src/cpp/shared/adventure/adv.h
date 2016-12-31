@@ -73,7 +73,6 @@ public:
   };
 
   int Add(int,int,int);
-  int CountEmptyCreatureSlots();
 };
 
 class hero
@@ -158,7 +157,7 @@ public:
 	  
   int HasArtifact(int);
   void TakeArtifact(int);
-  int CountEmptyArtifactSlots()
+  int CountEmptyArtifactSlots();
 
   signed char Stats(int);
   signed char GetSSLevel(int);
