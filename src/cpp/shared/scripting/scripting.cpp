@@ -246,6 +246,13 @@ int l_takeTroop(lua_State *L) {
   return 0;
 }
 
+int l_checkemptycreatureslots(lua_State *L) {
+	armyGroup *arm = (armyGroup*)lua_touserdata(L, 1); 
+	lua_pushinteger(L, arm->CountEmptyCreatureSlots());
+	return 1; 
+
+}
+
 int l_getplayer(lua_State *L) {
   int n = (int)luaL_checknumber(L, 1);
   lua_pushlightuserdata(L, &gpGame->players[n]);

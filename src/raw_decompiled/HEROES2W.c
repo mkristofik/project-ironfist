@@ -73128,6 +73128,15 @@ signed int __fastcall GiveArtifact(hero *hero, ARTIFACT a2, int a3, char scrollS
   return result;
 }
 
+signed int __fastcall EmptyArtifacts(hero *hero)
+{
+	signed int amount = 0;
+	for (i = 0; int i < 14 && hero->artifacts[i] == -1; ++i)
+	{
+		amount += 1;
+	}
+}
+
 //----- (0048DB80) --------------------------------------------------------
 int __thiscall advManager::GiveRandomArtifact(void *ecx0, hero *hro)
 {
