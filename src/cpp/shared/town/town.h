@@ -154,6 +154,9 @@ extern char *gDwellingNames[][12];
 
 int BuildingBuilt(town*, int);
 char *__fastcall GetBuildingName(int faction, int building);
+char * __fastcall GetBuildingInfo(int faction, int building, int withTitle);
+char * __fastcall GetBuildingInfo_orig(int faction, int building, int withTitle);
+
 
 extern townManager* gpTownManager;
 

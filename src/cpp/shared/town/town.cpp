@@ -290,18 +290,50 @@ int townManager::RecruitHero(int id, int x) {
 }
 
 char *__fastcall GetBuildingName(int faction, int building) {
-  if(faction == FACTION_NECROMANCER && building == BUILDING_TAVERN) {
+  static char poisonedWellName[] = "Poisoned Well";
+
+  if (faction == FACTION_NECROMANCER && building == BUILDING_TAVERN) {
     return xNecromancerShrine;
-  } else {
-    if(building == BUILDING_SPECIAL_GROWTH) {
+  }
+  else {
+    if (building == BUILDING_SPECIAL_GROWTH) {
       return gWellExtraNames[faction];
-    } else if(building == BUILDING_SPECIAL) {
+    }
+    else if (building == BUILDING_SPECIAL) {
       return gSpecialBuildingNames[faction];
-    } else if(building >= BUILDING_DWELLING_1) {
-      return gDwellingNames[faction][building-BUILDING_DWELLING_1];
-    } else {
+    }
+    else if (building >= BUILDING_DWELLING_1) {
+      return gDwellingNames[faction][building - BUILDING_DWELLING_1];
+    }
+    else if (faction == FACTION_NECROMANCER && building == BUILDING_WELL) {
+      return poisonedWellName;
+    }
+    else {
       return gNeutralBuildingNames[building];
     }
+  }
+}
+
+char * __fastcall GetBuildingInfo(int faction, int building, int withTitle) {
+  static char buf[128] = { 0 };
+  const char *wellInfo = "The Well provides refreshing drinking water.";
+  const char *poisonedInfo = "The Well has been tainted by the presence of dark magic. Good thing undead don't get thirsty.";
+
+  if (building == BUILDING_WELL) {
+    const char *info = wellInfo;
+    if (faction == FACTION_NECROMANCER) {
+      info = poisonedInfo;
+    }
+    if (withTitle) {
+      snprintf(buf, 128, "{%s}\n\n%s", GetBuildingName(faction, building), info);
+    }
+    else {
+      snprintf(buf, 128, "%s", info);
+    }
+    return buf;
+  }
+  else {
+    return GetBuildingInfo_orig(faction, building, withTitle);
   }
 }
 
