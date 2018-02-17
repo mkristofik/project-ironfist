@@ -102,6 +102,7 @@ public:
   void SetNumSpellsOfLevel(int,int);
 
   void BuildBuilding(int);
+  bool BuildingBuilt(int);
 };
 
 class townManager : public baseManager {
