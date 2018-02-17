@@ -270,6 +270,65 @@ void townManager::SetupMage(heroWindow *mageGuildWindow) {
 	GUISetIcon(mageGuildWindow, BUILDING_ICON, gText);
 }
 
+void townManager::SetupWell(heroWindow *window) {
+  SetupWell_orig(window);
+
+  const char *format = "Attack: %d"
+    "\nDefense: %d"
+    "\nDmg: %d-%d"
+    "\nHP: %d"
+    "\n\nSpeed:\n%s";
+    const char *formatWithGrowth = "Attack: %d"
+    "\nDefense: %d"
+    "\nDmg: %d-%d"
+    "\nHP: %d"
+    "\n\nSpeed:\n%s"
+    "\n\nGrowth\n + %d / week";
+
+  for (int tier = 0; tier < 6; ++tier) {
+    int dwellingIdx = tier;
+    if (tier > 0 && castle->BuildingBuilt(tier + BUILDING_UPGRADE_1 - 1)) {
+      dwellingIdx += 5;
+    }
+    if (tier == 5 && castle->BuildingBuilt(BUILDING_UPGRADE_5B)) {  // Warlock Black Tower
+      dwellingIdx = 11;
+    }
+
+    char buf[128] = { 0 };
+    const tag_monsterInfo &mon = gMonsterDatabase[gDwellingType[castle->factionID][dwellingIdx]];
+    if (castle->BuildingBuilt(dwellingIdx + BUILDING_DWELLING_1)) {
+      // Original code added +2 for the Well here.
+      int growth = mon.growth;
+      if (tier == 0 && castle->BuildingBuilt(BUILDING_SPECIAL_GROWTH)) {
+        growth += 8;
+      }
+
+      snprintf(buf, sizeof(buf), formatWithGrowth,
+        mon.attack,
+        mon.defense,
+        mon.min_damage,
+        mon.max_damage,
+        mon.hp,
+        speedText[mon.speed],
+        growth);
+    }
+    else {
+      snprintf(buf, sizeof(buf), format,
+        mon.attack,
+        mon.defense,
+        mon.min_damage,
+        mon.max_damage,
+        mon.hp,
+        speedText[mon.speed]);
+    }
+
+    // Overwrite the text the original code sent for each creature's
+    // description field in the Well window.
+    GUISetText(window, 25 + tier, buf);
+  }
+}
+
+
 int townManager::RecruitHero(int id, int x) {
 	 /*
 	  * The original RecruitHero will give heroes their movement points back.

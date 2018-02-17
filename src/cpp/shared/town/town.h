@@ -116,6 +116,8 @@ public:
 	virtual int Open(int);
 	int Open_orig(int);
 	void SetupMage(heroWindow*);
+	void SetupWell(heroWindow*);
+	void SetupWell_orig(heroWindow*);
 
 	int RecruitHero(int,int);
 	int RecruitHero_orig(int,int);

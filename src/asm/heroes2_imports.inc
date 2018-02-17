@@ -285,6 +285,8 @@ IMPORT_?gTownEligibleBuildMask@@3PAKA = 1
 
 IMPORT_?SetupTowns@game@@QAEXXZ = 1
 IMPORT_?SetupMage@townManager@@QAEXPAVheroWindow@@@Z = 1
+IMPORT_?SetupWell@townManager@@QAEXPAVheroWindow@@@Z = 1
+?SetupWell@townManager@@QAEXPAVheroWindow@@@Z_clone EQU ?SetupWell_orig@townManager@@QAEXPAVheroWindow@@@Z
 IMPORT_?RecruitHero@townManager@@QAEHHH@Z = 1
 ?RecruitHero@townManager@@QAEHHH@Z_clone EQU ?RecruitHero_orig@townManager@@QAEHHH@Z
 IMPORT_?GetBuildingName@@YIPADHH@Z = 1
