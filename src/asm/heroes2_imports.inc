@@ -297,6 +297,8 @@ IMPORT_?GetBuildingInfo@@YIPADHHH@Z = 1
 ;;scripting hooks
 IMPORT_?PerDay@game@@QAEXXZ = 1
 ?PerDay@game@@QAEXXZ_clone EQU ?PerDay_orig@game@@QAEXXZ
+IMPORT_?PerWeek@game@@QAEXXZ = 1
+?PerWeek@game@@QAEXXZ_clone EQU ?PerWeek_orig@game@@QAEXXZ
 IMPORT_?Open@advManager@@UAEHH@Z = 1
 ?Open@advManager@@UAEHH@Z_clone EQU ?Open_orig@advManager@@QAEHH@Z ; Changing U to Q changes virtual method to non
 IMPORT_?Open@townManager@@UAEHH@Z = 1

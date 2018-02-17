@@ -196,6 +196,8 @@ public:
 
 	void PerDay();
 	void PerDay_orig();
+  void PerWeek();
+  void PerWeek_orig();
 
   void ResetIronfistGameState();
   void ShareVision(int sourcePlayer, int destPlayer);

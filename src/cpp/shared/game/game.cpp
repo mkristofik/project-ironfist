@@ -139,6 +139,28 @@ void game::PerDay() {
 	ScriptCallback("OnNewDay", this->month, this->week, this->day);
 }
 
+void game::PerWeek() {
+  PerWeek_orig();
+
+  for (int i = 0; i < MAX_TOWNS; ++i) {
+    town &townObj = castles[i];
+    for (int d = BUILDING_DWELLING_1; d <= BUILDING_UPGRADE_5B; ++d) {
+      if (!townObj.BuildingBuilt(BUILDING_WELL) || !townObj.BuildingBuilt(d)) {
+        continue;
+      }
+
+      // Undo the +2 growth provided by the Well. Unowned towns grow at half rate.
+      const int dwellingIdx = d - BUILDING_DWELLING_1;
+      if (townObj.ownerIdx >= 0) {
+        townObj.numCreaturesInDwelling[dwellingIdx] -= 2;
+      }
+      else {
+        townObj.numCreaturesInDwelling[dwellingIdx] -= 1;
+      }
+    }
+  }
+}
+
 void game::ResetIronfistGameState() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
         for (int j = 0; j < NUM_PLAYERS; j++) {

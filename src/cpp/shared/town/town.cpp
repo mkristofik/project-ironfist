@@ -23,10 +23,6 @@ unsigned long gTownEligibleBuildMask[] = {
   0x1FF8BF9B
 };
 
-int BuildingBuilt(town* twn, int building) {
-	return (twn->buildingsBuiltFlags & (1 << building)) ? 1 : 0;
-}
-
 void game::SetupTowns() {
 
 	for(int castleIdx = 0; castleIdx < MAX_TOWNS; castleIdx++) {
@@ -223,6 +219,9 @@ void town::SetNumSpellsOfLevel(int l, int n) {
 	this->numSpellsOfLevel[l] = n;
 }
 
+bool town::BuildingBuilt(int building) {
+  return buildingsBuiltFlags & (1 << building);
+}
 
 void townManager::SetupMage(heroWindow *mageGuildWindow) {
 	const int SPELL_SCROLLS = 10;
@@ -238,7 +237,7 @@ void townManager::SetupMage(heroWindow *mageGuildWindow) {
 
 	for (int i = 0; i < 5; i++) {
 		for(int j = 0; j < 4; j++) {
-			int hasLibrary = this->castle->factionID == FACTION_WIZARD && BuildingBuilt(this->castle, BUILDING_SPECIAL);
+			int hasLibrary = this->castle->factionID == FACTION_WIZARD && this->castle->BuildingBuilt(BUILDING_SPECIAL);
 
 			if(j < this->castle->numSpellsOfLevel[i]) {
 				GUIAddFlag(mageGuildWindow, SPELL_SCROLLS+4*i+j, ICON_GUI_VISIBLE);
