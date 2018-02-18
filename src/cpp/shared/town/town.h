@@ -66,6 +66,7 @@ enum BUILDING_CODE : __int8
   BUILDING_UPGRADE_5 = 0x1D,
   BUILDING_UPGRADE_5B = 0x1E,
   BUILDING_EXT_3 = 0x1F,
+  BUILDING_MAX
 };
 
 class town {
@@ -102,7 +103,13 @@ public:
   void SetNumSpellsOfLevel(int,int);
 
   void BuildBuilding(int);
-  bool BuildingBuilt(int);
+  bool BuildingBuilt(int) const;
+  bool DwellingBuilt(int) const;
+
+  // Get the index of the most upgraded building built at the given tier.
+  // Returns integer in range [0, NUM_DWELLINGS), or -1 for an invalid
+  // tier outside range [0, 5].
+  int DwellingIndex(int) const;
 };
 
 class townManager : public baseManager {
@@ -153,7 +160,6 @@ extern char *gSpecialBuildingNames[];
 extern char *gNeutralBuildingNames[];
 extern char *gDwellingNames[][12];
 
-int BuildingBuilt(town*, int);
 char *__fastcall GetBuildingName(int faction, int building);
 
 extern townManager* gpTownManager;

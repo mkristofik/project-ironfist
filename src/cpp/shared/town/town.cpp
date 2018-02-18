@@ -79,7 +79,7 @@ void game::SetupTowns() {
 			}
 
 			for(int i = BUILDING_UPGRADE_1; i <= BUILDING_UPGRADE_5B; i++ ) {
-				if((1 << i) & castle->buildingsBuiltFlags) {
+				if(castle->BuildingBuilt(i)) {
 					if(i == BUILDING_UPGRADE_5B)
 						castle->buildingsBuiltFlags &= ~((1 << BUILDING_DWELLING_6) | (BUILDING_UPGRADE_5B));
 					else
@@ -87,15 +87,15 @@ void game::SetupTowns() {
 				}
 			}
 
-			for(int i = 0; i <= NUM_DWELLINGS; i++) {
-				if((1 << (i+BUILDING_DWELLING_1) & castle->buildingsBuiltFlags))
+			for(int i = 0; i < NUM_DWELLINGS; i++) {
+				if(castle->DwellingBuilt(i))
 					castle->numCreaturesInDwelling[i] = gMonsterDatabase[gDwellingType[castle->factionID][i]].growth;
 			}
 
-			if(castle->buildingsBuiltFlags & (1 << BUILDING_MAGE_GUILD)) {
+			if(castle->BuildingBuilt(BUILDING_MAGE_GUILD)) {
 				for(int i = 0; i < castle->mageGuildLevel; i++ ) {
 					castle->numSpellsOfLevel[i] = gSpellLimits[i];
-					if(castle->factionID == FACTION_WIZARD && (castle->buildingsBuiltFlags & (1 << BUILDING_SPECIAL)))
+					if(castle->factionID == FACTION_WIZARD && (castle->BuildingBuilt(BUILDING_SPECIAL)))
 						castle->numSpellsOfLevel[i]++;
 				}
 			}
@@ -219,8 +219,36 @@ void town::SetNumSpellsOfLevel(int l, int n) {
 	this->numSpellsOfLevel[l] = n;
 }
 
-bool town::BuildingBuilt(int building) {
+bool town::BuildingBuilt(int building) const {
+  if (building < 0 || building >= BUILDING_MAX) {
+    return false;
+  }
+
   return (buildingsBuiltFlags & (1 << building));
+}
+
+bool town::DwellingBuilt(int index) const
+{
+  if (index < 0 || index >= NUM_DWELLINGS) {
+    return false;
+  }
+
+  return BuildingBuilt(index + BUILDING_DWELLING_1);
+}
+
+int town::DwellingIndex(int tier) const {
+  if (tier < 0 || tier > 5) {
+    return -1;
+  }
+
+  int dwellingIdx = tier;
+  if (tier > 0 && BuildingBuilt(tier + BUILDING_UPGRADE_1 - 1)) {
+    dwellingIdx += 5;
+  }
+  if (tier == 5 && BuildingBuilt(BUILDING_UPGRADE_5B)) {  // Warlock Black Tower
+    dwellingIdx = 11;
+  }
+  return dwellingIdx;
 }
 
 void townManager::SetupMage(heroWindow *mageGuildWindow) {
