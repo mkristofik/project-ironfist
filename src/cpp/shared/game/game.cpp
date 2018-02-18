@@ -161,6 +161,38 @@ void game::PerWeek() {
   }
 }
 
+void game::PerMonth() {
+  // Save the number of creatures in each dwelling in case we have to restore
+  // them later. PerWeek() runs before this so all dwellings have increased
+  // population at this point.
+  int numCreatures[MAX_CASTLES][NUM_DWELLINGS];
+  for (int c = 0; c < MAX_CASTLES; ++c) {
+    town &townObj = castles[c];
+    for (int d = 0; d < NUM_DWELLINGS; ++d) {
+      numCreatures[c][d] = townObj.numCreaturesInDwelling[d];
+    }
+  }
+
+  PerMonth_orig();
+  if (giMonthType != 2) {
+    return;
+  }
+
+  // The math the original code does for Month of Plague is slightly off now
+  // that I've disabled the Well. But I kinda hate the Plague anyway so I'll
+  // just remove it.
+  for (int c = 0; c < MAX_CASTLES; ++c) {
+    town &townObj = castles[c];
+    for (int d = 0; d < NUM_DWELLINGS; ++d) {
+      townObj.numCreaturesInDwelling[d] = numCreatures[c][d];
+    }
+  }
+
+  // One of the benign month types that don't do anything.
+  giMonthType = 0;
+  giMonthTypeExtra = Random(0, 9);
+}
+
 void game::ResetIronfistGameState() {
     for (int i = 0; i < NUM_PLAYERS; i++) {
         for (int j = 0; j < NUM_PLAYERS; j++) {

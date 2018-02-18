@@ -198,6 +198,8 @@ public:
 	void PerDay_orig();
   void PerWeek();
   void PerWeek_orig();
+  void PerMonth();
+  void PerMonth_orig();
 
   void ResetIronfistGameState();
   void ShareVision(int sourcePlayer, int destPlayer);
@@ -269,6 +271,8 @@ extern signed char gcColorToSetupPos[];
 extern signed char giVisRange[];
 extern char xIsPlayingExpansionCampaign;
 extern int giCurTurn;
+extern int giMonthType;
+extern int giMonthTypeExtra;
 
 extern randomHeroCreatureInfo randomHeroArmyBounds[NUM_FACTIONS][2];
 extern int neutralTownCreatureTypes[NUM_FACTIONS][5];
