@@ -300,13 +300,16 @@ void townManager::SetupMage(heroWindow *mageGuildWindow) {
 
 void townManager::SetupWell(heroWindow *window) {
   SetupWell_orig(window);
+  if (!gbDisableWell) {
+    return;
+  }
 
   const char *format = "Attack: %d"
     "\nDefense: %d"
     "\nDmg: %d-%d"
     "\nHP: %d"
     "\n\nSpeed:\n%s";
-    const char *formatWithGrowth = "Attack: %d"
+  const char *formatWithGrowth = "Attack: %d"
     "\nDefense: %d"
     "\nDmg: %d-%d"
     "\nHP: %d"
@@ -314,17 +317,10 @@ void townManager::SetupWell(heroWindow *window) {
     "\n\nGrowth\n + %d / week";
 
   for (int tier = 0; tier < 6; ++tier) {
-    int dwellingIdx = tier;
-    if (tier > 0 && castle->BuildingBuilt(tier + BUILDING_UPGRADE_1 - 1)) {
-      dwellingIdx += 5;
-    }
-    if (tier == 5 && castle->BuildingBuilt(BUILDING_UPGRADE_5B)) {  // Warlock Black Tower
-      dwellingIdx = 11;
-    }
-
     char buf[128] = { 0 };
+    const int dwellingIdx = castle->DwellingIndex(tier);
     const tag_monsterInfo &mon = gMonsterDatabase[gDwellingType[castle->factionID][dwellingIdx]];
-    if (castle->BuildingBuilt(dwellingIdx + BUILDING_DWELLING_1)) {
+    if (castle->DwellingBuilt(dwellingIdx)) {
       // Original code added +2 for the Well here.
       int growth = mon.growth;
       if (tier == 0 && castle->BuildingBuilt(BUILDING_SPECIAL_GROWTH)) {
@@ -391,7 +387,7 @@ char *__fastcall GetBuildingName(int faction, int building) {
     else if (building >= BUILDING_DWELLING_1) {
       return gDwellingNames[faction][building - BUILDING_DWELLING_1];
     }
-    else if (faction == FACTION_NECROMANCER && building == BUILDING_WELL) {
+    else if (gbDisableWell && faction == FACTION_NECROMANCER && building == BUILDING_WELL) {
       return poisonedWellName;
     }
     else {
@@ -405,7 +401,7 @@ char * __fastcall GetBuildingInfo(int faction, int building, int withTitle) {
   const char *wellInfo = "The Well provides refreshing drinking water.";
   const char *poisonedInfo = "The Well has been tainted by the presence of dark magic. Good thing undead don't get thirsty.";
 
-  if (building == BUILDING_WELL) {
+  if (gbDisableWell && building == BUILDING_WELL) {
     const char *info = wellInfo;
     if (faction == FACTION_NECROMANCER) {
       info = poisonedInfo;

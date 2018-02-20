@@ -9,6 +9,9 @@
 #include "scripting/scripting.h"
 #include "spell/spells.h"
 
+// Set to true to disable +2 growth from the well.
+bool gbDisableWell = false;
+
 // The title screen implements button hovering manually in code, using this data structure
 // x, y, width, height
 unsigned short IMHotSpots[][4] = {
@@ -141,6 +144,9 @@ void game::PerDay() {
 
 void game::PerWeek() {
   PerWeek_orig();
+  if (!gbDisableWell) {
+    return;
+  }
 
   for (int i = 0; i < MAX_TOWNS; ++i) {
     town &townObj = castles[i];
@@ -174,7 +180,7 @@ void game::PerMonth() {
   }
 
   PerMonth_orig();
-  if (giMonthType != 2) {
+  if (!gbDisableWell || giMonthType != 2) {
     return;
   }
 
@@ -236,6 +242,17 @@ int __fastcall HandleAppSpecificMenuCommands(int a1) {
     default:
       return HandleAppSpecificMenuCommands_orig(a1);
   }
+}
+
+int __fastcall InterpretCommandLine() {
+  const int status = InterpretCommandLine_orig();
+
+  const std::string args(gcCommandLine);
+  if (args.find("/disable-well") != std::string::npos) {
+    gbDisableWell = true;
+  }
+
+  return status;
 }
 
 class philAI {
