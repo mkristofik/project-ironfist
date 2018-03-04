@@ -123,6 +123,8 @@ public:
 	virtual int Open(int);
 	int Open_orig(int);
 	void SetupMage(heroWindow*);
+	void SetupWell(heroWindow*);
+	void SetupWell_orig(heroWindow*);
 
 	int RecruitHero(int,int);
 	int RecruitHero_orig(int,int);
@@ -161,6 +163,9 @@ extern char *gNeutralBuildingNames[];
 extern char *gDwellingNames[][12];
 
 char *__fastcall GetBuildingName(int faction, int building);
+char * __fastcall GetBuildingInfo(int faction, int building, int withTitle);
+char * __fastcall GetBuildingInfo_orig(int faction, int building, int withTitle);
+
 
 extern townManager* gpTownManager;
 
