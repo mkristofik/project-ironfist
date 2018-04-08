@@ -1,4 +1,5 @@
 #include "artifacts.h"
+#include "artifacts_xml.hxx"
 
 /*
  *
@@ -14,6 +15,13 @@
  *
  * game::GetVictoryConditionText also does funny stuff in looking up artifact names  
  */
+
+int tmpArtifactCount = 0;
+
+void LoadArtifacts() {
+  std::auto_ptr<artifacts> allArtifacts = artifacts_("./DATA/artifacts.xml");
+  tmpArtifactCount = allArtifacts->artifact().size();
+}
 
 char *gArtifactNames[] = {
 	"Ultimate Book of Knowledge",
