@@ -110,7 +110,6 @@ enum ARTIFACT {
   ARTIFACT_PANDORA_BOX = 103,
 };
 
-extern int tmpArtifactCount;
 void LoadArtifacts();
 
 #endif
