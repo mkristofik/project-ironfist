@@ -307,6 +307,7 @@ void set_creature_consts(lua_State* L) {
   lua_setconst(L, "CREATURE_TREANT", CREATURE_TREANT);
   lua_setconst(L, "CREATURE_CYBER_KOBOLD_SPEARMAN", CREATURE_CYBER_KOBOLD_SPEARMAN);
   lua_setconst(L, "CREATURE_CYBER_PLASMA_BERSERKER", CREATURE_CYBER_PLASMA_BERSERKER);
+  lua_setconst(L, "CREATURE_CYBER_PLASMA_LANCER", CREATURE_CYBER_PLASMA_LANCER);  
   lua_setconst(L, "CREATURE_CYBER_INDIGO_PANTHER", CREATURE_CYBER_INDIGO_PANTHER);
   lua_setconst(L, "CREATURE_CYBER_SHADOW_ASSASSIN", CREATURE_CYBER_SHADOW_ASSASSIN);
   lua_setconst(L, "CREATURE_CYBER_BEHEMOTH", CREATURE_CYBER_BEHEMOTH);
@@ -451,9 +452,14 @@ void set_map_cell_consts(lua_State *L) {
   lua_setconst(L, "MAP_CELL_FLIP_DIAGONALLY", MAP_CELL_FLIP_DIAGONALLY);
 }
 
+void set_tooltip_consts(lua_State *L) {
+  lua_setconst_nil(L, "TOOLTIP_DEFAULT");
+}
+
 void set_map_consts(lua_State *L) {
   set_location_consts(L);
   set_map_cell_consts(L);
+  set_tooltip_consts(L);
 }
 
 /*************************************************************************************/
